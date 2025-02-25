@@ -1,6 +1,6 @@
 //  2 cpp START
 //>mk-obj "src/system/*.cpp"
-//>mk-obj "src/*.cpp"Git Aliases
+//>mk-obj "src/*.cpp"
 //args = "main.cpp -lSDL2 -lSDL2_image src/*.o src/system/*.o"
 //mk-exe args "main"
 //END
