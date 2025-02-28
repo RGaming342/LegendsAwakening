@@ -1,8 +1,12 @@
 #version 330
 
-out vec4 FragColor; // Output fragment color
+out vec4 FragColor;
 in vec3 Color;
+in vec2 texcd;
+
+uniform sampler2D texture1;
+
 void main()
 {
-    FragColor = vec4(Color, 1.0); // Orange color (RGBA)
+	FragColor = texture(texture1, texcd)*vec4(Color,1.0);
 }

@@ -79,6 +79,16 @@ class Texture{
 		const int blend = GL_LINEAR;
 		
 		Texture() = default;
+		Texture(Texture&& other) noexcept : texture(other.texture) {
+			other.texture = 0;
+		}
+		Texture& operator=(Texture&& other) noexcept {
+			if (this != &other) {
+				texture = other.texture;
+				other.texture = 0;
+			}
+			return *this;
+		}
 		~Texture();
 		
 		int load(std::string);
@@ -88,6 +98,8 @@ class Texture{
 		void setNearFilter(int filter);
 		void setFarFilter(int filter);
 		glm::ivec2 getSize();
+		GLuint getRaw();
+		void setRaw(GLuint);
 	private:
 		unsigned int texture;
 		int width = -1;
