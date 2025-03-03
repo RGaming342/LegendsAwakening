@@ -10,8 +10,11 @@
 #include <cmath>
 
 struct CharacterData {
-	uint16_t xPos;      // 2 bytes for the x position in the texture atlas
-	uint16_t yPos;      // 2 bytes for the y position in the texture atlas
+	uint8_t xPos;
+	uint8_t yPos;
+	uint8_t sizeX;
+	uint8_t sizeY;
+	uint8_t spaceTop;
 };
 struct Font {
 	Texture texture;                                     // the texture atlas

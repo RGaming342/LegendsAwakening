@@ -15,7 +15,7 @@
 
 int main() {
 	
-	WindowInput window("Legends Awakening",800,600);
+	WindowInput window("Legends Awakening",600,600);
 	Shader sh;
 	if(sh.load("shaders/test.vert","shaders/test.frag")){
 		std::cerr<<"Error1"<<std::endl;
@@ -25,16 +25,16 @@ int main() {
 	tri.setInput(1,1,3,3,0,0,RenderType::STATIC);
 	tri.setInput(2,2,2,2,0,0,RenderType::STATIC);
 	std::vector<float> pos = {
-		-0.5f,  0.5f, 0.0f,
-		0.5f,  0.5f, 0.0f,
-		-0.5f,  -0.5f, 0.0f,
-		0.5f,  -0.5f, 0.0f};
+		-1.0f,  1.0f, 0.0f,
+		1.0f,  1.0f, 0.0f,
+		-1.0f,  -1.0f, 0.0f,
+		1.0f,  -1.0f, 0.0f};
 	tri.setData(0,pos);
 	std::vector<float> tex = {
-		0.0f, 0.0f,
-		1.0f, 0.0f,
 		0.0f, 1.0f,
-		1.0f, 1.0f};
+		1.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f};
 	tri.setData(2,tex);
 	std::vector<float> color = {
 		1.0f,  0.0f, 0.0f,
@@ -44,7 +44,7 @@ int main() {
 	tri.setData(1,color);
 	
 	FontLoader FTloader;
-	auto font = FTloader.load("assets/gontserrat/Gontserrat-Medium.ttf",32);
+	auto font = FTloader.load("assets/gontserrat/Gontserrat-Medium.ttf",128,0);
 	
 	while(true){
 		window.PollEvents();
