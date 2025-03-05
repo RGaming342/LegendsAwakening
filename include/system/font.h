@@ -19,6 +19,7 @@ struct CharacterData {
 struct Font {
 	Texture texture;                                     // the texture atlas
 	std::unordered_map<char, CharacterData> characters;
+	uint16_t size;
 };
 class FontLoader {
 	public:

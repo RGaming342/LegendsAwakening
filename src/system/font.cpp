@@ -38,7 +38,7 @@ Font FontLoader::load(const std::string& fontPath, unsigned int fontSize, bool i
 		if(b<1000)
 			bottom = std::max(bottom, b);
 	}
-	std::cout<<maxHeight<<std::endl;
+	
 	unsigned int height = maxHeight*10;
 	unsigned int width = maxWidth*10;
 	
@@ -52,6 +52,7 @@ Font FontLoader::load(const std::string& fontPath, unsigned int fontSize, bool i
 	uint8_t dx=0,dy=0;
 	
 	Font font;
+	font.size = fontSize;
 	
 	for (unsigned char c = 32; c < 128; ++c) {
 		font.characters[c] = {dx,dy,0,0,0};

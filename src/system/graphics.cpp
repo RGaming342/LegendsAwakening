@@ -105,7 +105,9 @@ bool Shader::load(const std::string& vertexPath, const std::string& fragmentPath
 	return false;
 }
 void Shader::unload() {
-	glDeleteProgram(programID);
+	if(programID){
+		glDeleteProgram(programID);
+	}
 }
 void Shader::use() {
 	glUseProgram(programID);

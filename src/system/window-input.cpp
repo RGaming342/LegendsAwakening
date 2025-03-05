@@ -39,9 +39,10 @@ WindowInput::WindowInput(const std::string& title, int width, int height){
 		exit(1);
 	}
 	SDL_GL_SetSwapInterval(0);
+	glViewport(0,0,width,height);
 	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 WindowInput::~WindowInput() {
 	SDL_DestroyWindow(window);

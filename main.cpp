@@ -1,7 +1,8 @@
 //  2 cpp START
 //>mk-obj "src/system/*.cpp"
 //>mk-obj "src/*.cpp"
-//args = "main.cpp -lSDL2 -lSDL2_image -lfreetype src/*.o src/system/*.o"
+//;mk-obj "core/logger/logger.cpp"
+//args = "main.cpp -lSDL2 -lSDL2_image -lfreetype core/logger/logger.o src/*.o src/system/*.o"
 //mk-exe args "main"
 //END
 
@@ -12,11 +13,12 @@
 #include "include/shader-manager.h"
 #include "include/system/window-input.h"
 #include "include/system/font.h"
+#include "include/text.h"
 
 int main() {
 	
-	WindowInput window("Legends Awakening",600,600);
-	Shader sh;
+	WindowInput window("Legends Awakening",800,600);
+	/*Shader sh;
 	if(sh.load("shaders/test.vert","shaders/test.frag")){
 		std::cerr<<"Error1"<<std::endl;
 	}
@@ -42,9 +44,23 @@ int main() {
 		0.0f,  0.0f, 1.0f,
 		1.0f,  1.0f, 1.0f};
 	tri.setData(1,color);
+	*/
+	//FontLoader FTloader;
+	//auto font = FTloader.load("assets/gontserrat/Gontserrat-Medium.ttf",128,0);
 	
-	FontLoader FTloader;
-	auto font = FTloader.load("assets/gontserrat/Gontserrat-Medium.ttf",128,0);
+	TextManager texts;
+	texts.loadFont("mid","assets/gontserrat/Gontserrat-Medium.ttf",128);
+	texts.makeString("test","mid",glm::vec3(0,0,-1),glm::vec3(0,45,0),"test");
+	
+	glm::vec3 playerPos(0,0,0);
+	//glm::mat4 viewPorjectionMX = glm::ortho(-1.0f,1.0f,-1.0f,1.0f,-10.0f,100.0f);
+	glm::mat4 projection = glm::perspective(glm::radians(90.0f), (float)800 / (float)600,0.001f,1000.0f);
+	glm::quat orientation = glm::angleAxis(glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f)) *
+						glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)) *
+						glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 viewPorjectionMX = projection * glm::mat4_cast(orientation);
+	
+	texts.setPlayerPosAndView(playerPos,viewPorjectionMX);
 	
 	while(true){
 		window.PollEvents();
@@ -53,9 +69,10 @@ int main() {
 		}
 		
 		window.clear();
-		sh.use();
-		font.texture.bind();
-		tri.draw();
+		//sh.use();
+		//font.texture.bind();
+		//tri.draw();
+		texts.draw("test");
 		window.display();
 		
 		SDL_Delay(16);
