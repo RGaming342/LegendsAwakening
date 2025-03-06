@@ -79,13 +79,15 @@ class Texture{
 		const int blend = GL_LINEAR;
 		
 		Texture() = default;
-		Texture(Texture&& other) noexcept : texture(other.texture) {
+		Texture(Texture&& other) noexcept : texture(other.texture),width(other.width),height(other.height) {
 			other.texture = 0;
 		}
 		Texture& operator=(Texture&& other) noexcept {
 			if (this != &other) {
 				texture = other.texture;
 				other.texture = 0;
+				width = other.width;
+				height = other.height;
 			}
 			return *this;
 		}

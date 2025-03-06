@@ -10,7 +10,7 @@ FontLoader::FontLoader(){
 FontLoader::~FontLoader(){
 	FT_Done_FreeType(m_freetypeLibrary);
 }
-Font FontLoader::load(const std::string& fontPath, unsigned int fontSize, bool isPixel) {
+Font FontLoader::load(const std::string& fontPath, unsigned int fontSize,uint8_t Spacing, bool isPixel) {
 	FT_Face face;
 	if(FT_New_Face(m_freetypeLibrary, fontPath.c_str(), 0, &face)){
 		std::cerr << "Error loading font: " << fontPath << std::endl;
@@ -53,6 +53,7 @@ Font FontLoader::load(const std::string& fontPath, unsigned int fontSize, bool i
 	
 	Font font;
 	font.size = fontSize;
+	font.spacing = Spacing;
 	
 	for (unsigned char c = 32; c < 128; ++c) {
 		font.characters[c] = {dx,dy,0,0,0};
@@ -96,7 +97,7 @@ Font FontLoader::load(const std::string& fontPath, unsigned int fontSize, bool i
 			dy++;
 		}
 	}
-	
+	font.characters[' '].sizeX = Spacing;
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width, height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, atlasData.data());
 	
 	font.texture.setRaw(textureID);

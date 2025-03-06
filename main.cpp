@@ -49,8 +49,8 @@ int main() {
 	//auto font = FTloader.load("assets/gontserrat/Gontserrat-Medium.ttf",128,0);
 	
 	TextManager texts;
-	texts.loadFont("mid","assets/gontserrat/Gontserrat-Medium.ttf",128);
-	texts.makeString("test","mid",glm::vec3(0,0,-1),glm::vec3(0,45,0),"test");
+	texts.loadFont("mid","assets/gontserrat/Gontserrat-Medium.ttf",128,30);
+	texts.makeString("test","mid",glm::vec3(0,0,-5),glm::vec3(0,0,0),"this seems to work?\nRight?\nthis is 1 string\nNot 4\n(it has auto centering)",0.025);
 	
 	glm::vec3 playerPos(0,0,0);
 	//glm::mat4 viewPorjectionMX = glm::ortho(-1.0f,1.0f,-1.0f,1.0f,-10.0f,100.0f);

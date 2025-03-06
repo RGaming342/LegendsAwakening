@@ -240,15 +240,12 @@ GLuint Texture::getRaw(){
 	return texture;
 }
 void Texture::setRaw(GLuint tx){
-	GLint Width, Height;
 	glBindTexture(GL_TEXTURE_2D, tx);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
 	glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
 	texture = tx;
-	width = Width;
-	height = Height;
 }
 
 

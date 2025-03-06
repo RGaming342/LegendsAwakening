@@ -9,13 +9,13 @@ class TextManager{
 		TextManager();
 		~TextManager();
 		
-		void makeString(std::string id, std::string fontID, glm::vec3 pos, glm::vec3 rot, std::string str);
+		void makeString(std::string id, std::string fontID, glm::vec3 pos, glm::vec3 rot, std::string str, float SPACE);
 		
 		void setFont(std::string id, std::string fontID);
 		
-		void loadFont(std::string fontID,std::string path,int size,bool isPixel=0);
+		void loadFont(std::string fontID,std::string path,int size, uint8_t Spacing,bool isPixel=0);
 		
-		void setString(std::string id,std::string str);
+		void setString(std::string id,std::string str, float SPACE);
 		std::string getString(std::string id);
 		void draw(std::string id);
 		void setRotation(std::string id, glm::vec3 rot);
@@ -24,6 +24,8 @@ class TextManager{
 		glm::vec3 getPosition(std::string id);
 		void setColor(std::string id, glm::ivec4 color);
 		glm::ivec4 getColor(std::string id);
+		
+		glm::vec2 getSize(std::string id);
 		
 		void setPlayerPosAndView(const glm::vec3& playerPos,const glm::mat4& viewProjection);
 	private:
@@ -35,6 +37,8 @@ class TextManager{
 			std::vector<float> Positions;
 			std::vector<unsigned int> Data;
 			std::string font;
+			float spacing;
+			glm::vec2 size;
 		};
 		glm::vec3 playerPosition;
 		glm::mat4 vpMX;

@@ -7,104 +7,123 @@ TextManager::TextManager():Renderer(DrawType::QUAD){
 		Error("Failed to load text shaders.");
 	}
 	Renderer.setInput(0,0,2,2,0,0,RenderType::STATIC);
-	Renderer.setInput(1,1,1,1,0,1,RenderType::STATIC);
+	Renderer.setInput(1,1,2,1,0,1,RenderType::STATIC);
+	Renderer.setInput(2,1,2,1,1,1,RenderType::STATIC);
 }
 TextManager::~TextManager(){ shader.unload(); }
 
-void TextManager::makeString(std::string id, std::string fontID, glm::vec3 pos, glm::vec3 rot, std::string str){
+void TextManager::makeString(std::string id, std::string fontID, glm::vec3 pos, glm::vec3 rot, std::string str, float SPACE){
 	texts[id].POS = pos;
 	texts[id].ROT = rot;
 	makeMatrix(id);
 	texts[id].font = fontID;
 	texts[id].text = str;
-	setColor(id,glm::ivec4(255,255,255,7));
+	texts[id].spacing = SPACE;
+	setColor(id,glm::ivec4(255,255,255,255));
 }
 
 void TextManager::setFont(std::string id, std::string fontID){
 	texts[id].font = fontID;
-	setString(id,texts[id].text);
+	setString(id,texts[id].text,texts[id].spacing);
 }
-void TextManager::loadFont(std::string fontID,std::string path,int size,bool isPixel){
-	fonts[fontID] = FTloader.load(path,size,isPixel);
+void TextManager::loadFont(std::string fontID,std::string path,int size, uint8_t Spacing,bool isPixel){
+	fonts[fontID] = FTloader.load(path,size,Spacing,isPixel);
 }
 
 void TextManager::setColor(std::string id, glm::ivec4 color){
-	texts[id].R = color.x/2;
-	texts[id].G = color.y/2;
-	texts[id].B = color.z/2;
+	texts[id].R = color.x;
+	texts[id].G = color.y;
+	texts[id].B = color.z;
 	texts[id].A = color.w;
-	setString(id,texts[id].text);
+	setString(id,texts[id].text,texts[id].spacing);
 }
 glm::ivec4 TextManager::getColor(std::string id){
 	const auto& data = texts[id];
-	return glm::ivec4(data.R*2,data.G*2,data.B*2,data.A);
+	return glm::ivec4(data.R,data.G,data.B,data.A);
 }
 
-void TextManager::setString(std::string id, std::string str){
+void TextManager::setString(std::string id, std::string str, float SPACE){
 	texts[id].text = str;
-	uint32_t color = texts[id].R|(texts[id].G<<7)|(texts[id].B<<14)|(texts[id].A<<21);
+	texts[id].spacing = SPACE;
+	uint32_t color = texts[id].R|(texts[id].G<<8)|(texts[id].B<<16)|(texts[id].A<<24);
 	
-	float Quad[4][2] = {{1,1},{1,0},{0,0},{0,1}};
+	std::vector<float> pos;
+	std::vector<unsigned int> data;
 	
-	std::vector<float> pos = {
-		1.0f,  1.0f,
-		1.0f,  -1.0f,
-		-1.0f,  -1.0f,
-		-1.0f,  1.0f};
-	texts[id].Positions = pos;
-	std::vector<unsigned int> data = {
-		(120u|(color<<8)),
-		(10u|(color<<8)),
-		(0u|(color<<8)),
-		(110u|(color<<8))
-	};
-	texts[id].Data = data;
-	
-	int Bottom=1,Right=0;
+	float Bottom=1,Right=0;
 	
 	Font& font = fonts[texts[id].font];
 	
-	int aspectRatio = font.texture.getSize().x / font.texture.getSize().y;
+	float aspectRatio = (float)font.texture.getSize().x / (float)font.texture.getSize().y;
+	float Quad[4][2] = {{0,1},{0,0},{0,0},{0,1}};
 	
 	for(unsigned int i=0;i<texts[id].text.size();i++){
 		char ch = str[i];
-		
 		switch(ch){
 			case '\0':{ i=-1; continue; }break;
 			case '\n':{
 				for(int j=0;j<4;j++){
-					Quad[j][1] += 1;
-					Quad[j][0] = 1;
+					Quad[j][1] -= 1;
+					Quad[j][0] = 0;
 				}
-				Quad[2][0] = 0;
-				Quad[3][0] = 0;
-				Bottom += 1;
+				Bottom -= 1;
 			}break;
 			case ' ':{
+				float width = (float)font.characters[' '].sizeX/((float)font.texture.getSize().x/10);
 				for(int j=0;j<4;j++){
-					Quad[j][0] += aspectRatio;
+					Quad[j][0] += width;
 				}
-				Right += aspectRatio;
+				Right += width;
 			}break;
 			default:{
+				if(font.characters.find(ch) == font.characters.end()){
+					continue;
+				}
+				auto& info = font.characters[ch];
+				float width = (float)info.sizeX/((float)font.texture.getSize().x/10);
+				Quad[0][0] += width;
+				Quad[1][0] += width;
+				for(int j=0;j<4;j++){
+					pos.push_back(Quad[j][0]);
+					pos.push_back(Quad[j][1]);
+				}
+				unsigned int DATA = 0;
 				
+				DATA = (((info.xPos)*1000)+(int)(width*1000));
+				DATA |= ((info.yPos+1)*1000)<<16;
+				data.push_back(DATA);
+				data.push_back(color);
+				DATA = (((info.xPos)*1000)+(int)(width*1000));
+				DATA |= ((info.yPos)*1000)<<16;
+				data.push_back(DATA);
+				data.push_back(color);
+				DATA = (info.xPos)*1000;
+				DATA |= ((info.yPos)*1000)<<16;
+				data.push_back(DATA);
+				data.push_back(color);
+				DATA = (info.xPos)*1000;
+				DATA |= ((info.yPos+1)*1000)<<16;
+				data.push_back(DATA);
+				data.push_back(color);
 				
-				
-				
-				
-				
+				Quad[0][0] += SPACE;
+				Quad[1][0] += SPACE;
+				Quad[2][0] += width+SPACE;
+				Quad[3][0] += width+SPACE;
+				if(Quad[3][0]>Right){
+					Right = Quad[3][0];
+				}
 			}
 		};
-		
-		
-		
-		
-		
-		
-		
 	}
-	
-	
+	Right -= SPACE;
+	texts[id].size = glm::vec2(Right,Bottom);
+	for(unsigned int i=0;i<pos.size();i+=2){
+		pos[i] -= Right/2;
+		pos[i+1] -= Bottom/2;
+	}
+	texts[id].Positions = pos;
+	texts[id].Data = data;
 }
 
 std::string TextManager::getString(std::string id){
@@ -147,7 +166,9 @@ void TextManager::makeMatrix(std::string id){
 	texts[id].modelMX = translationMatrix * rotationMatrix;
 }
 
-
+glm::vec2 getSize(std::string id){
+	return texts[id].size;
+}
 
 
 
