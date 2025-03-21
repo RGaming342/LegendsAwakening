@@ -9,8 +9,8 @@ uniform sampler2D texture1;
 void main()
 {
 	vec4 txColor = texture(texture1, TexCoord);
-	if(txColor.x<0.5){
-		txColor.w = 0;
-	}
-	FragColor = texture(texture1, TexCoord)*Color;
+	if (length(txColor.rgb) < 0.99) {
+        txColor.a = 0.0;  // Make it fully transparent
+    }
+	FragColor = txColor*Color;
 }

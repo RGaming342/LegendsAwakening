@@ -200,7 +200,14 @@ int Texture::load(std::string filename){
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface->w, surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
+	GLenum format;
+	if (surface->format->BytesPerPixel == 4) {
+		format = GL_RGBA;
+	} else if (surface->format->BytesPerPixel == 3) {
+		format = GL_RGB;
+	}
+	
+	glTexImage2D(GL_TEXTURE_2D, 0, format, surface->w, surface->h, 0, format, GL_UNSIGNED_BYTE, surface->pixels);
 	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -209,6 +216,52 @@ int Texture::load(std::string filename){
 	height = surface->h;
 	
 	SDL_FreeSurface(surface);
+	return 0;
+}
+bool Texture::loadBox(std::string foldername, std::string Type) {
+	type = 1;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+	
+	std::string faces[6] = {
+		"right." + Type, "left." + Type, "top." + Type,
+		"bottom." + Type, "front." + Type, "back." + Type
+	};
+	
+	GLenum cubeMapFaces[6] = {
+		GL_TEXTURE_CUBE_MAP_POSITIVE_X, GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+		GL_TEXTURE_CUBE_MAP_POSITIVE_Y, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+		GL_TEXTURE_CUBE_MAP_POSITIVE_Z, GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
+	};
+	
+	bool failed = false;
+	
+	for (int i = 0; i < 6; i++) {
+		std::string filepath = foldername + faces[i];
+		SDL_Surface* surface = IMG_Load(filepath.c_str());
+		
+		if (!surface) {
+			Error("Failed to load texture: " + filepath);
+			failed = true;
+			continue;
+		}
+		
+		GLenum format = (surface->format->BytesPerPixel == 4) ? GL_RGBA : GL_RGB;
+		
+		glTexImage2D(cubeMapFaces[i], 0, format, surface->w, surface->h, 0, format, GL_UNSIGNED_BYTE, surface->pixels);
+		
+		SDL_FreeSurface(surface);
+	}
+	
+	if (failed) {
+		Error("Failed to load one or more textures for the Cube Map");
+		return 1;
+	}
+	
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	
 	return 0;
 }
 void Texture::unload(){
@@ -220,18 +273,36 @@ void Texture::unload(){
 	}
 }
 void Texture::bind(){
-	glBindTexture(GL_TEXTURE_2D, texture);
+	if(type==0){
+		glBindTexture(GL_TEXTURE_2D, texture);
+	}else if(type==1){
+		glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+	}
 }
 void Texture::unbind(){
-	glBindTexture(GL_TEXTURE_2D, 0);
+	if(type==0){
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}else if(type==1){
+		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	}
 }
 void Texture::setNearFilter(int filter){
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+	if(type==0){
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+	}else if(type==1){
+		glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, filter);
+	}
 }
 void Texture::setFarFilter(int filter){
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+	if(type==0){
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+	}else if(type==1){
+		glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, filter);
+	}
 }
 glm::ivec2 Texture::getSize(){
 	return glm::ivec2(width,height);

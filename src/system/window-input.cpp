@@ -274,9 +274,13 @@ void WindowInput::ClearMouseEvents() {
 		MouseQueue.pop();
 	}
 }
-glm::ivec2 WindowInput::getMousePosision(){
+glm::ivec2 WindowInput::getMousePosition(bool isMenu){
 	int x, y;
-	SDL_GetMouseState(&x, &y);
+	if(isMenu){
+		SDL_GetMouseState(&x, &y);
+	}else{
+		SDL_GetRelativeMouseState(&x, &y);
+	}
 	return glm::ivec2{x, y};
 }
 

@@ -4,8 +4,8 @@
 #include <sstream>
 #include <SDL2/SDL_image.h>
 #include "glad.h"
-#include "glm/glm.hpp"
-#include "glm/gtc/type_ptr.hpp"
+#include "../../core/logger/logger.h"
+#include "glm.h"
 #include <vector>
 #include <unordered_map>
 
@@ -94,6 +94,7 @@ class Texture{
 		~Texture();
 		
 		int load(std::string);
+		bool loadBox(std::string,std::string);
 		void unload();
 		void bind();
 		void unbind();
@@ -103,6 +104,7 @@ class Texture{
 		GLuint getRaw();
 		void setRaw(GLuint);
 	private:
+		int type = 0;// 0=2d,1=box
 		unsigned int texture;
 		int width = -1;
 		int height = -1;

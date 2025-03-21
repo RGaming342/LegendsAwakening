@@ -9,7 +9,7 @@ class TextManager{
 		TextManager();
 		~TextManager();
 		
-		void makeString(std::string id, std::string fontID, glm::vec3 pos, glm::vec3 rot, std::string str, float SPACE);
+		void makeString(std::string id, std::string fontID, glm::vec3 pos, glm::vec3 rot, float Scale, std::string str, float SPACE);
 		
 		void setFont(std::string id, std::string fontID);
 		
@@ -25,6 +25,7 @@ class TextManager{
 		void setColor(std::string id, glm::ivec4 color);
 		glm::ivec4 getColor(std::string id);
 		
+		void setScale(std::string id, float Scale);
 		glm::vec2 getSize(std::string id);
 		
 		void setPlayerPosAndView(const glm::vec3& playerPos,const glm::mat4& viewProjection);
@@ -39,6 +40,7 @@ class TextManager{
 			std::string font;
 			float spacing;
 			glm::vec2 size;
+			float scale=1;
 		};
 		glm::vec3 playerPosition;
 		glm::mat4 vpMX;

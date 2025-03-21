@@ -1,3 +1,59 @@
 [2025-03-04 17:51:04] [ERROR]: Failed to load text shaders.
 [2025-03-05 16:46:48] [ERROR]: Failed to load text shaders.
 [2025-03-05 16:47:12] [ERROR]: Failed to load text shaders.
+
+[2025-03-08 12:52:34] [ERROR]: Failed to load SkyBox
+[2025-03-08 13:05:54] [ERROR]: Failed to load SkyBox
+[2025-03-08 13:09:01] [ERROR]: Failed to load SkyBox
+
+[2025-03-20 22:31:36] [ERROR]: Failed to load texture: right.png
+[2025-03-20 22:31:36] [ERROR]: Failed to load texture: left.png
+[2025-03-20 22:31:36] [ERROR]: Failed to load texture: top.png
+[2025-03-20 22:31:36] [ERROR]: Failed to load texture: bottom.png
+[2025-03-20 22:31:36] [ERROR]: Failed to load texture: front.png
+[2025-03-20 22:31:36] [ERROR]: Failed to load texture: back.png
+[2025-03-20 22:31:36] [ERROR]: Failed to load one or more textures for the Cube Map
+[2025-03-20 22:31:36] [ERROR]: Failed to load SkyBox
+[2025-03-20 22:33:27] [ERROR]: Failed to load texture: right.png
+[2025-03-20 22:33:27] [ERROR]: Failed to load texture: left.png
+[2025-03-20 22:33:27] [ERROR]: Failed to load texture: top.png
+[2025-03-20 22:33:27] [ERROR]: Failed to load texture: bottom.png
+[2025-03-20 22:33:27] [ERROR]: Failed to load texture: front.png
+[2025-03-20 22:33:27] [ERROR]: Failed to load texture: back.png
+[2025-03-20 22:33:27] [ERROR]: Failed to load one or more textures for the Cube Map
+[2025-03-20 22:33:27] [ERROR]: Failed to load SkyBox
+[2025-03-20 22:34:22] [ERROR]: Failed to load texture: right.png
+[2025-03-20 22:34:22] [ERROR]: Failed to load texture: left.png
+[2025-03-20 22:34:22] [ERROR]: Failed to load texture: top.png
+[2025-03-20 22:34:22] [ERROR]: Failed to load texture: bottom.png
+[2025-03-20 22:34:22] [ERROR]: Failed to load texture: front.png
+[2025-03-20 22:34:22] [ERROR]: Failed to load texture: back.png
+[2025-03-20 22:34:22] [ERROR]: Failed to load one or more textures for the Cube Map
+[2025-03-20 22:34:22] [ERROR]: Failed to load SkyBox
+[2025-03-20 22:36:31] [ERROR]: Failed to load texture: right.jpg
+[2025-03-20 22:36:31] [ERROR]: Failed to load texture: left.jpg
+[2025-03-20 22:36:31] [ERROR]: Failed to load texture: top.jpg
+[2025-03-20 22:36:31] [ERROR]: Failed to load texture: bottom.jpg
+[2025-03-20 22:36:31] [ERROR]: Failed to load texture: front.jpg
+[2025-03-20 22:36:31] [ERROR]: Failed to load texture: back.jpg
+[2025-03-20 22:36:31] [ERROR]: Failed to load one or more textures for the Cube Map
+[2025-03-20 22:36:31] [ERROR]: Failed to load SkyBox
+[2025-03-20 22:46:15] [ERROR]: Failed to load texture: right.png
+[2025-03-20 22:46:15] [ERROR]: Failed to load texture: left.png
+[2025-03-20 22:46:15] [ERROR]: Failed to load texture: top.png
+[2025-03-20 22:46:15] [ERROR]: Failed to load texture: bottom.png
+[2025-03-20 22:46:15] [ERROR]: Failed to load texture: front.png
+[2025-03-20 22:46:15] [ERROR]: Failed to load texture: back.png
+[2025-03-20 22:46:15] [ERROR]: Failed to load one or more textures for the Cube Map
+[2025-03-20 22:46:15] [ERROR]: Failed to load SkyBox
+[2025-03-20 22:53:28] [DEBUG]: here1
+[2025-03-20 22:53:28] [DEBUG]: here2
+[2025-03-20 22:55:58] [DEBUG]: here1
+[2025-03-20 22:55:58] [DEBUG]: here2
+[2025-03-20 23:02:35] [DEBUG]: here1
+[2025-03-20 23:02:35] [DEBUG]: here2
+[2025-03-20 23:04:22] [DEBUG]: here1
+[2025-03-20 23:04:22] [DEBUG]: here2,512
+[2025-03-20 23:04:22] [DEBUG]: here2,512
+[2025-03-20 23:05:21] [DEBUG]: here1
+[2025-03-20 23:05:21] [DEBUG]: here2

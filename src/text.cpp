@@ -12,13 +12,14 @@ TextManager::TextManager():Renderer(DrawType::QUAD){
 }
 TextManager::~TextManager(){ shader.unload(); }
 
-void TextManager::makeString(std::string id, std::string fontID, glm::vec3 pos, glm::vec3 rot, std::string str, float SPACE){
+void TextManager::makeString(std::string id, std::string fontID, glm::vec3 pos, glm::vec3 rot, float Scale, std::string str, float SPACE){
 	texts[id].POS = pos;
 	texts[id].ROT = rot;
 	makeMatrix(id);
 	texts[id].font = fontID;
 	texts[id].text = str;
 	texts[id].spacing = SPACE;
+	texts[id].scale = Scale;
 	setColor(id,glm::ivec4(255,255,255,255));
 }
 
@@ -28,6 +29,11 @@ void TextManager::setFont(std::string id, std::string fontID){
 }
 void TextManager::loadFont(std::string fontID,std::string path,int size, uint8_t Spacing,bool isPixel){
 	fonts[fontID] = FTloader.load(path,size,Spacing,isPixel);
+}
+
+void TextManager::setScale(std::string id, float Scale){
+	texts[id].scale = Scale;
+	setString(id,texts[id].text,texts[id].spacing);
 }
 
 void TextManager::setColor(std::string id, glm::ivec4 color){
@@ -47,15 +53,18 @@ void TextManager::setString(std::string id, std::string str, float SPACE){
 	texts[id].spacing = SPACE;
 	uint32_t color = texts[id].R|(texts[id].G<<8)|(texts[id].B<<16)|(texts[id].A<<24);
 	
+	float scale = texts[id].scale;
+	SPACE*=scale;
+	
 	std::vector<float> pos;
 	std::vector<unsigned int> data;
 	
-	float Bottom=1,Right=0;
+	float Bottom=1*scale,Right=0;
 	
 	Font& font = fonts[texts[id].font];
 	
 	float aspectRatio = (float)font.texture.getSize().x / (float)font.texture.getSize().y;
-	float Quad[4][2] = {{0,1},{0,0},{0,0},{0,1}};
+	float Quad[4][2] = {{0,1*scale},{0,0},{0,0},{0,1*scale}};
 	
 	for(unsigned int i=0;i<texts[id].text.size();i++){
 		char ch = str[i];
@@ -63,13 +72,13 @@ void TextManager::setString(std::string id, std::string str, float SPACE){
 			case '\0':{ i=-1; continue; }break;
 			case '\n':{
 				for(int j=0;j<4;j++){
-					Quad[j][1] -= 1;
+					Quad[j][1] -= 1*scale;
 					Quad[j][0] = 0;
 				}
-				Bottom -= 1;
+				Bottom -= 1*scale;
 			}break;
 			case ' ':{
-				float width = (float)font.characters[' '].sizeX/((float)font.texture.getSize().x/10);
+				float width = ((float)font.characters[' '].sizeX/((float)font.texture.getSize().x/10))*scale;
 				for(int j=0;j<4;j++){
 					Quad[j][0] += width;
 				}
@@ -81,8 +90,8 @@ void TextManager::setString(std::string id, std::string str, float SPACE){
 				}
 				auto& info = font.characters[ch];
 				float width = (float)info.sizeX/((float)font.texture.getSize().x/10);
-				Quad[0][0] += width;
-				Quad[1][0] += width;
+				Quad[0][0] += width*scale;
+				Quad[1][0] += width*scale;
 				for(int j=0;j<4;j++){
 					pos.push_back(Quad[j][0]);
 					pos.push_back(Quad[j][1]);
@@ -108,8 +117,8 @@ void TextManager::setString(std::string id, std::string str, float SPACE){
 				
 				Quad[0][0] += SPACE;
 				Quad[1][0] += SPACE;
-				Quad[2][0] += width+SPACE;
-				Quad[3][0] += width+SPACE;
+				Quad[2][0] += (width*scale)+SPACE;
+				Quad[3][0] += (width*scale)+SPACE;
 				if(Quad[3][0]>Right){
 					Right = Quad[3][0];
 				}
@@ -166,7 +175,7 @@ void TextManager::makeMatrix(std::string id){
 	texts[id].modelMX = translationMatrix * rotationMatrix;
 }
 
-glm::vec2 getSize(std::string id){
+glm::vec2 TextManager::getSize(std::string id){
 	return texts[id].size;
 }
 

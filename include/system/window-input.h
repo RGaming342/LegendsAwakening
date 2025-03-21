@@ -4,7 +4,7 @@
 #include <string>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include "glm/vec2.hpp"
+#include "glm.h"
 #include "glad.h"
 #include <cstdint>
 
@@ -87,7 +87,7 @@ class WindowInput {
 		MouseEvent getMouseEvent();
 		bool isThereMouseEvent();
 		void ClearMouseEvents();
-		glm::ivec2 getMousePosision();
+		glm::ivec2 getMousePosition(bool isMenu=false);
 		
 	private:
 		SDL_GLContext context;
