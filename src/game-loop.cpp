@@ -52,18 +52,12 @@ glm::mat4 makeVMX(glm::vec3 rot){
 }
 void handlePlayerMovement(glm::vec3& position,const glm::vec3& rotation,glm::vec3& velocity,const glm::vec3& maxSpeed){
 	velocity = glm::vec3(0,0,0);
-	if(keyStates[Key::W]){
-		velocity.z += -maxSpeed.z;
-	}
-	if(keyStates[Key::S]){
-		velocity.z += maxSpeed.z;
-	}
-	if(keyStates[Key::A]){
-		velocity.x += -maxSpeed.x;
-	}
-	if(keyStates[Key::D]){
-		velocity.x += maxSpeed.x;
-	}
+	if(keyStates[Key::W]){ velocity.z += -maxSpeed.z; }
+	if(keyStates[Key::S]){ velocity.z += maxSpeed.z; }
+	if(keyStates[Key::A]){ velocity.x += -maxSpeed.x; }
+	if(keyStates[Key::D]){ velocity.x += maxSpeed.x; }
+	if(keyStates[Key::L_SHIFT]){ position.y += -maxSpeed.y; }
+	if(keyStates[Key::SPACE]){ position.y += maxSpeed.y; }
 	
 	move(position,rotation,velocity);
 }
@@ -81,13 +75,22 @@ void handlePlayerLooking(const glm::vec2& MousePosition,glm::vec3& rotation,cons
 	if (rotation.y >= 360.0f) rotation.y -= 360.0f;
 }
 
+
+
+
+
+
+
+
+
+
+
 void GameLoop(){
-	glClearColor(0x87/255.0f, 0xCE/255.0f, 0xEB/255.0f, 1.0f);
+	//glClearColor(0x87/255.0f, 0xCE/255.0f, 0xEB/255.0f, 1.0f);
 	SkyBox skybox;
 	
 	
 	textManager.makeString("play","standard",glm::vec3(0,0,0),glm::vec3(0,0,0),1,"Play",0.025);
-	textManager.makeString("quit","standard",glm::vec3(0,-0.6,0),glm::vec3(0,0,0),1,"Quit",0.025);
 	glm::vec3 PLpos(0,0,0);
 	glm::vec3 PLrot(0,0,0);
 	glm::mat4 projection = glm::perspective(glm::radians(90.0f), (float)800 / (float)600,0.1f,100000000.0f);
@@ -101,15 +104,14 @@ void GameLoop(){
 	
 	
 	RenderObj meshtest(DrawType::TRIANGLE);
-	meshtest.setInput(0,0,8,3,0,0,RenderType::STATIC);
-	meshtest.setInput(1,0,8,3,3,0,RenderType::STATIC);
-	meshtest.setInput(2,0,8,2,6,0,RenderType::STATIC);
+	meshtest.setInput(0,0,6,3,0,0,RenderType::STATIC);
+	meshtest.setInput(1,0,6,3,3,0,RenderType::STATIC);
 	
 	Model model;
 	model.load("assets/test.obj");
 	auto vtc = model.getVertices();
-	
-	std::vector<float> v;
+	Chunk chunk;
+	std::vector<float> v = chunk.getVertices();
 	for(uint i=0;i<vtc.size();i++){
 		v.push_back(vtc[i].position.x);
 		v.push_back(vtc[i].position.y);
@@ -117,8 +119,6 @@ void GameLoop(){
 		v.push_back(vtc[i].normal.x);
 		v.push_back(vtc[i].normal.y);
 		v.push_back(vtc[i].normal.z);
-		v.push_back(vtc[i].texCoords.x);
-		v.push_back(vtc[i].texCoords.y);
 	}
 	meshtest.setData(0,v);
 	Shader standardShader;
@@ -143,6 +143,7 @@ void GameLoop(){
 				if(key.key == Key::M){
 					MS_ENB = !MS_ENB;
 					SDL_SetRelativeMouseMode((MS_ENB)?SDL_TRUE:SDL_FALSE);
+					if(MS_ENB){ window.getMousePosition(); }
 				}
 				if(key.key == Key::G){
 					WIRE = !WIRE;

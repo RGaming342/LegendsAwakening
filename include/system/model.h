@@ -17,7 +17,6 @@ class Model {
 		struct Vertex {
 			glm::vec3 position;
 			glm::vec3 normal;
-			glm::vec2 texCoords;
 		};
 		Model() = default;
 		~Model() = default;

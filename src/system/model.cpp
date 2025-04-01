@@ -8,7 +8,7 @@ bool Model::load(const std::string& path) {
 	
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
 		std::cerr << "Error loading model: " << importer.GetErrorString() << std::endl;
-		return false;
+		return true;
 	}
 	
 	vertices.clear();
@@ -16,7 +16,7 @@ bool Model::load(const std::string& path) {
 	
 	processNode(scene->mRootNode, scene);
 	
-	return true;
+	return false;
 }
 
 void Model::processNode(aiNode* node, const aiScene* scene) {
@@ -41,12 +41,6 @@ void Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 			vertex.normal = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
 		} else {
 			vertex.normal = glm::vec3(0.0f, 0.0f, 0.0f); // Placeholder if missing
-		}
-		
-		if (mesh->mTextureCoords[0]) {
-			vertex.texCoords = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
-		} else {
-			vertex.texCoords = glm::vec2(0.0f, 0.0f); // default UVs
 		}
 		
 		vertices.push_back(vertex);

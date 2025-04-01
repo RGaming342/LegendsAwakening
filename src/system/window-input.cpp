@@ -108,9 +108,12 @@ void WindowInput::PollEvents() {
 					case SDL_SCANCODE_RETURN: event.key = Key::ENTER; break;
 					case SDL_SCANCODE_ESCAPE: event.key = Key::ESC; break;
 					case SDL_SCANCODE_SPACE: event.key = Key::SPACE; break;
-					case SDL_SCANCODE_LSHIFT: case SDL_SCANCODE_RSHIFT: event.key = Key::SHIFT; break;
-					case SDL_SCANCODE_LCTRL: case SDL_SCANCODE_RCTRL: event.key = Key::CTRL; break;
-					case SDL_SCANCODE_LALT: case SDL_SCANCODE_RALT: event.key = Key::ALT; break;
+					case SDL_SCANCODE_LSHIFT: event.key = Key::L_SHIFT; break;
+					case SDL_SCANCODE_RSHIFT: event.key = Key::R_SHIFT; break;
+					case SDL_SCANCODE_LCTRL: event.key = Key::L_CTRL; break;
+					case SDL_SCANCODE_RCTRL: event.key = Key::R_CTRL; break;
+					case SDL_SCANCODE_LALT: event.key = Key::L_ALT; break;
+					case SDL_SCANCODE_RALT: event.key = Key::R_ALT; break;
 					default: event.key = Key::UNKNOWN; break;
 				}
 				

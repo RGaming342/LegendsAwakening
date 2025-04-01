@@ -40,7 +40,8 @@ enum class Key {
 	NUM_0,
 	ENTER, ESC,
 	SPACE,
-	SHIFT, CTRL, ALT,
+	L_SHIFT, L_CTRL, L_ALT,
+	R_SHIFT, R_CTRL, R_ALT,
 };
 enum class MouseEventType {
 	NONE,
