@@ -103,6 +103,21 @@ void GameLoop(){
 	
 	
 	
+	
+	
+	RenderObj chunkRO(DrawType::TRIANGLE);
+	chunkRO.setInput(0,0,6,3,0,0,RenderType::STATIC);
+	chunkRO.setInput(1,0,6,3,3,0,RenderType::STATIC);
+	chunkRO.setInput(2,1,1,1,0,1,RenderType::STATIC);
+	Shader chunkSH;
+	chunkSH.load("shaders/chunk/sh.vert","shaders/chunk/sh.frag");
+	Chunk chunk;
+	auto d = chunk.getVertices();
+	chunkRO.setData(0,d.vertex);
+	chunkRO.setData(1,d.color);
+	
+	
+	
 	RenderObj meshtest(DrawType::TRIANGLE);
 	meshtest.setInput(0,0,6,3,0,0,RenderType::STATIC);
 	meshtest.setInput(1,0,6,3,3,0,RenderType::STATIC);
@@ -110,8 +125,7 @@ void GameLoop(){
 	Model model;
 	model.load("assets/test.obj");
 	auto vtc = model.getVertices();
-	Chunk chunk;
-	std::vector<float> v = chunk.getVertices();
+	std::vector<float> v=d.vertex;
 	for(uint i=0;i<vtc.size();i++){
 		v.push_back(vtc[i].position.x);
 		v.push_back(vtc[i].position.y);
@@ -130,6 +144,8 @@ void GameLoop(){
 		glm::mat4 viewPorjectionMX = projection * makeVMX(PLrot);
 		standardShader.setMat4("viewProjection",viewPorjectionMX);
 		standardShader.setVec3("PLpos",PLpos);
+		chunkSH.setMat4("viewProjection",viewPorjectionMX);
+		chunkSH.setVec3("PLpos",PLpos);
 		textManager.setPlayerPosAndView(PLpos,viewPorjectionMX);
 		handlePlayerMovement(PLpos,PLrot,velocity,maxSpeed);
 		window.PollEvents();
@@ -160,6 +176,10 @@ void GameLoop(){
 		
 		window.clear();
 		skybox.render(viewPorjectionMX);
+		
+		chunkSH.use();
+		chunkRO.draw();
+		
 		textManager.draw("play");
 		standardShader.use();
 		meshtest.draw();
